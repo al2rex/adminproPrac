@@ -25,6 +25,7 @@ import { HospitalesComponent } from './hospitales/hospitales.component';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { MedicosComponent } from './medicos/medicos.component';
 import { MedicoComponent } from './medicos/medico.component';
+import { BusquedaComponent } from './busqueda/busqueda.component';
 
 
 
@@ -47,6 +48,7 @@ import { MedicoComponent } from './medicos/medico.component';
         HospitalesComponent,
         MedicosComponent,
         MedicoComponent,
+        BusquedaComponent,
     ],
     exports: [
         PagesComponent,
