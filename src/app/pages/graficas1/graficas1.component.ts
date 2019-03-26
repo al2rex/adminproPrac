@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class Graficas1Component implements OnInit {
-  
+
 
   graficos: any = {
     'grafico1': {

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from '../../models/usuario.models';
-import { UsuarioService, ModalUploadService } from '../../services/service.index';
+import { Usuario } from '../../models/usuario.model';
+import { UsuarioService } from '../../services/service.index';
+import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
+
+declare var swal: any;
 
 @Component({
   selector: 'app-usuarios',
@@ -8,76 +11,114 @@ import { UsuarioService, ModalUploadService } from '../../services/service.index
   styles: []
 })
 export class UsuariosComponent implements OnInit {
+
   usuarios: Usuario[] = [];
   desde: number = 0;
+
   totalRegistros: number = 0;
   cargando: boolean = true;
 
-  constructor(public _usuariosService: UsuarioService,
-              public _modalUploadService: ModalUploadService) { }
+  constructor(
+    public _usuarioService: UsuarioService,
+    public _modalUploadService: ModalUploadService
+  ) { }
 
   ngOnInit() {
-    this.cargarUSuarios();
-  }
-  mostrarModal(id: string){
-    this._modalUploadService.mostrarModal('usuarios', id);
-    this._modalUploadService.notificacion.subscribe(resp => this.cargarUSuarios() );
+    this.cargarUsuarios();
+
+    this._modalUploadService.notificacion
+          .subscribe( resp => this.cargarUsuarios() );
   }
 
-  cargarUSuarios(){
+  mostrarModal( id: string ) {
+
+    this._modalUploadService.mostrarModal( 'usuarios', id );
+  }
+
+  cargarUsuarios() {
+
     this.cargando = true;
-    this._usuariosService.cargarUsuarios(this.desde).subscribe((resp: any) => {
-      console.log(resp.usuarios)
-      this.totalRegistros = resp.total;
-      this.usuarios = resp.usuarios;
-      this.cargando = false;
-    })
+
+    this._usuarioService.cargarUsuarios( this.desde )
+              .subscribe( (resp: any) => {
+
+                this.totalRegistros = resp.total;
+                this.usuarios = resp.usuarios;
+                this.cargando = false;
+
+              });
 
   }
 
-  cambiarDesde(valor: number){
+  cambiarDesde( valor: number ) {
+
     let desde = this.desde + valor;
 
-    if(desde >= this.totalRegistros ){
+    if ( desde >= this.totalRegistros ) {
       return;
     }
 
-    if( desde < 0 ){
+    if ( desde < 0 ) {
       return;
     }
 
     this.desde += valor;
-    this.cargarUSuarios();
+    this.cargarUsuarios();
+
   }
 
-  buscarUsuario(termino: string){
-    if( termino.length <= 0 ){
-      this.cargarUSuarios();
+  buscarUsuario( termino: string ) {
+
+    if ( termino.length <= 0 ) {
+      this.cargarUsuarios();
       return;
     }
+
     this.cargando = true;
-    this._usuariosService.buscarUsuarios(termino).subscribe((usuarios: Usuario[]) => {
-      this.usuarios = usuarios;
-      this.cargando = false;
-    })
+
+    this._usuarioService.buscarUsuarios( termino )
+            .subscribe( (usuarios: Usuario[]) => {
+
+              this.usuarios = usuarios;
+              this.cargando = false;
+            });
+
   }
-  borrarUsuario(usuario: Usuario){
-    console.log(usuario)
-    if(usuario._id === this._usuariosService.usuario._id){
-      console.log("No se puede borrar asi mismo");
+
+  borrarUsuario( usuario: Usuario ) {
+
+    if ( usuario._id === this._usuarioService.usuario._id ) {
+      swal('No puede borrar usuario', 'No se puede borrar a si mismo', 'error');
       return;
     }
-    if(confirm('¿Desea borrar el usuario ' + usuario.nombre + ' ?')){
-      this._usuariosService.borrarUsuario(usuario._id).subscribe( resp => {
-        console.log(resp)
-        this.cargarUSuarios();
-      })
-    }
+
+    swal({
+      title: '¿Esta seguro?',
+      text: 'Esta a punto de borrar a ' + usuario.nombre,
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    })
+    .then( borrar => {
+
+      if (borrar) {
+
+        this._usuarioService.borrarUsuario( usuario._id )
+                  .subscribe( borrado => {
+                      this.cargarUsuarios();
+                  });
+
+      }
+
+    });
+
   }
 
-  guardarUsuario(usuario: Usuario){
+  guardarUsuario( usuario: Usuario ) {
 
-    this._usuariosService.actualizarUsuario(usuario).subscribe();
+    this._usuarioService.actualizarUsuario( usuario )
+            .subscribe();
+
   }
 
 }

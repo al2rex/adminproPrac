@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 declare function init_plugins();
+
 @Component({
   selector: 'app-nopagefound',
   templateUrl: './nopagefound.component.html',
   styles: [`
-  
   .error-box {
     height: 100%;
     position: fixed;
@@ -13,8 +14,8 @@ declare function init_plugins();
     .error-box .footer {
       width: 100%;
       left: 0px;
-      right: 0px; }
-  
+      right: 0px;
+    }
   .error-body {
     padding-top: 5%; }
     .error-body h1 {
@@ -26,7 +27,8 @@ declare function init_plugins();
 })
 export class NopagefoundComponent implements OnInit {
 
-  anio:number =new Date().getFullYear();
+  anio: number = new Date().getFullYear();
+
   constructor() { }
 
   ngOnInit() {

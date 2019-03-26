@@ -4,61 +4,76 @@ import { URL_SERVICIOS } from '../../config/config';
 import { UsuarioService } from '../usuario/usuario.service';
 import { Hospital } from '../../models/hospital.model';
 
+import swal from 'sweetalert';
+
 @Injectable()
 export class HospitalService {
+
   totalHospitales: number = 0;
+
   constructor(
     public http: HttpClient,
     public _usuarioService: UsuarioService
   ) { }
 
-  cargarHospitales(){
+  cargarHospitales() {
+
     let url = URL_SERVICIOS + '/hospital';
     return this.http.get( url )
-               .map( (resp: any) => {
-                 this.totalHospitales = resp.conteo;
-                  return resp.hospitales;
-               })
+              .map( (resp: any) => {
+                this.totalHospitales = resp.total;
+                return resp.hospitales;
+              });
+
   }
 
-  obtenerHospital(id: string){
-    let url = URL_SERVICIOS+ '/hospital/' + id;
+  obtenerHospital( id: string ) {
+
+    let url = URL_SERVICIOS + '/hospital/' + id;
     return this.http.get( url )
-               .map( (resp: any) => resp.hospital);
+                .map( (resp: any) => resp.hospital );
+
   }
 
-  borrarHospital(id: string){
-    let url = URL_SERVICIOS + "/hospital/"+id;
+  borrarHospital( id: string ) {
+
+    let url = URL_SERVICIOS + '/hospital/' + id;
     url += '?token=' + this._usuarioService.token;
 
     return this.http.delete( url )
-    .map( (resp:any) => {
-      console.log("Hospital borrado correctamente")
-    } )
+                .map( resp => swal('Hospital Borrado', 'Eliminado correctamente', 'success') );
+
   }
-  crearHospital( nombre:string ){
+
+  crearHospital( nombre: string ) {
+
     let url = URL_SERVICIOS + '/hospital';
     url += '?token=' + this._usuarioService.token;
 
-    return this.http.post( url, {nombre} )
-                    .map( (resp: any) => resp.hospital )
+    return this.http.post( url, { nombre } )
+              .map( (resp: any) => resp.hospital );
+
   }
 
-  buscarHospital(termino: string){
-    let url = URL_SERVICIOS + '/busqueda/coleccion/hospitales/'+ termino;
+  buscarHospital( termino: string ) {
+    let url = URL_SERVICIOS + '/busqueda/coleccion/hospitales/' + termino;
     return this.http.get( url )
-                    .map( (resp: any) => resp.hospitales )
+                .map( (resp: any) => resp.hospitales );
+
   }
 
-  actualizarHospital(hospital: Hospital){
-    let url = URL_SERVICIOS + '/hospital/'+ hospital._id;
-    url += '?token='+ this._usuarioService.token;
+  actualizarHospital( hospital: Hospital ) {
+
+    let url = URL_SERVICIOS + '/hospital/' + hospital._id;
+    url += '?token=' + this._usuarioService.token;
+
     return this.http.put( url, hospital )
-                    .map( (resp:any) => {
-                      console.log("Hospital actualizado") 
-                      return resp.hospital} );
-  
+              .map( (resp: any) => {
+
+                swal('Hospital Actualiado', hospital.nombre, 'success');
+                return resp.hospital;
+              });
+
   }
 
-  
 }

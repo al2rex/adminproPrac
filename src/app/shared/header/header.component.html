@@ -44,9 +44,10 @@
                 <!-- ============================================================== -->
                 <li class="nav-item hidden-xs-down search-box"> <a class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
                     <div class="app-search">
-                        <input #input (keyup.enter)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar y enter"> <a class="srh-btn"><i class="ti-close"></i></a> 
+                        <input #input (keyup.enter)="buscar( input.value )" type="text" class="form-control" placeholder="Buscar y enter"> <a class="srh-btn"><i class="ti-close"></i></a>
                     </div>
                 </li>
+
                 <!-- ============================================================== -->
                 <!-- Messages -->
                 <!-- ============================================================== -->
@@ -96,6 +97,7 @@
                 <!-- ============================================================== -->
                 <!-- End Messages -->
                 <!-- ============================================================== -->
+
                 <!-- ============================================================== -->
                 <!-- Language -->
                 <!-- ============================================================== -->
@@ -108,15 +110,18 @@
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img [src]="usuario.img | imagen" alt="user" class="profile-pic" /></a>
+                        <img [src]="usuario.img | imagen" alt="user" class="profile-pic" />
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right animated fadeIn">
                         <ul class="dropdown-user">
                             <li>
                                 <div class="dw-user-box" align="center">
                                     <div class="u-img"><img [src]="usuario.img | imagen" alt="user"></div>
                                     <div class="u-text">
-                                        <h4>{{ usuario.nombre }}</h4>
-                                        <p class="text-muted">{{ usuario.email }}</p><a routerLink="/perfil" class="btn btn-rounded btn-danger btn-sm">Ver perfil</a></div>
+                                        <h4> {{ usuario.nombre }} </h4>
+                                        <p class="text-muted"> {{ usuario.email }} </p>
+                                        <a routerLink="/perfil" class="btn btn-rounded btn-danger btn-sm">Ver perfil</a>
+                                    </div>
                                 </div>
                             </li>
                             <li role="separator" class="divider"></li>
